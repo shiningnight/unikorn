@@ -80,6 +80,7 @@ class Unicorn extends Koa {
                 explicitArray: false
             }
         }));
+        this.use(Unicorn.xmlBodyPreprocess());
         this.use(bodyParser({
             enableTypes: ['json', 'form'],
             jsonLimit: '20mb',
@@ -177,6 +178,15 @@ class Unicorn extends Koa {
                     ctx.ok(data);
                 }
             };
+            await next();
+        }
+    }
+
+    static xmlBodyPreprocess() {
+        return async function (ctx, next) {
+            if (ctx.request.type.toLowerCase() === 'application/xml') {
+                ctx.request.body = ctx.request.body.xml;
+            }
             await next();
         }
     }

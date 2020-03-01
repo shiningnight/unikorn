@@ -21,7 +21,7 @@ router.get('/meow', ctx => {
 });
 router.post('/', async (ctx, next) => {
     const data = ctx.request.body.xml;
-    ctx.u.log(data);
+    ctx.u.log(ctx.header['content-type'] === ctx.request.type);
     ctx.sendNotNull(data);
 });
 
