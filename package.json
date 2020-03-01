@@ -1,5 +1,5 @@
 {
-  "name": "unicorn",
+  "name": "unikorn",
   "version": "1.0.0",
   "description": "uniformed koa template with socket.io",
   "main": "index.js",
