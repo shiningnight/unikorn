@@ -1,0 +1,26 @@
+{
+  "name": "unicorn",
+  "version": "1.0.0",
+  "description": "uniformed koa template with socket.io",
+  "main": "index.js",
+  "author": {
+    "name": "shini",
+    "email": "shini@starlight.link"
+  },
+  "dependencies": {
+    "node-fetch": "^2.2.0",
+    "socket.io": "^2.1.1",
+    "socketio-auth": "^0.1.1",
+    "koa": "^2.5.3",
+    "koa-bodyparser": "^4.2.1",
+    "koa-helmet": "^4.0.0",
+    "koa-logger": "^3.2.0",
+    "koa-respond": "^1.0.1",
+    "koa-router": "^7.4.0",
+    "koa-xml-body": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.46",
+    "@types/socket.io": "^1.4.38"
+  }
+}
