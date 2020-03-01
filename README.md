@@ -1,4 +1,4 @@
-# Unicorn
+# Unikorn
 
 #### 介绍
 带标准化输出和socket.io的koa应用模版，封装了常见中间件和context工具
