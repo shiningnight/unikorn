@@ -1,8 +1,8 @@
 process.env.NODE_ENV = 'development';
-const Unicorn = require('./unicorn');
+const Unikorn = require('./index');
 let Router = require('koa-router');
 
-let app = new Unicorn({exposed: true, io: {enabled: true, auth: {mode: 'simple', password: '111'}}});
+let app = new Unikorn({exposed: true, io: {enabled: true, auth: {mode: 'simple', password: '111'}}});
 
 let router = new Router();
 router.get('/:cat', async (ctx, next) => {
@@ -20,7 +20,7 @@ router.get('/meow', ctx => {
         '</xml>','application/xml');
 });
 router.post('/', async (ctx, next) => {
-    const data = ctx.request.body.xml;
+    const data = ctx.request.body;
     ctx.u.log(ctx.header['content-type'] === ctx.request.type);
     ctx.sendNotNull(data);
 });
