@@ -8,7 +8,7 @@ let bodyParser = require('koa-bodyparser');
 let xmlParser = require('koa-xml-body');
 let helmet = require('koa-helmet');
 
-let u = require('./u');
+let u = require('./lib/u');
 
 let Message = {
     10000: '请求成功',
@@ -25,7 +25,7 @@ let Message = {
     30002: '无访问权限',
 };
 
-class Unicorn extends Koa {
+class Unikorn extends Koa {
     constructor(options) {
         const DEFAULTS = {
             exposed: false,
@@ -43,7 +43,7 @@ class Unicorn extends Koa {
         super();
         this.context.result = {};
         this.context.u = u;
-        this.context.fetch = Unicorn.fetch;
+        this.context.fetch = Unikorn.fetch;
         this.context.allowEmptyResArr = options.allowEmptyResArr;
 
         if (options.io.enabled) {
@@ -64,15 +64,15 @@ class Unicorn extends Koa {
             this.context.io = io;
         }
 
-        this.use(Unicorn.onError());
+        this.use(Unikorn.onError());
         this.use(helmet());
         if (process.env.NODE_ENV === 'development') {
             this.use(logger())
         }
         if (options.exposed) {
-            this.use(Unicorn.cors());
+            this.use(Unikorn.cors());
         }
-        this.use(Unicorn.registerUniSender());
+        this.use(Unikorn.registerUniSender());
         this.use(xmlParser({
             limit: '20mb',
             encoding: 'utf8',
@@ -80,6 +80,7 @@ class Unicorn extends Koa {
                 explicitArray: false
             }
         }));
+        this.use(Unikorn.xmlBodyPreprocess());
         this.use(bodyParser({
             enableTypes: ['json', 'form'],
             jsonLimit: '20mb',
@@ -181,6 +182,15 @@ class Unicorn extends Koa {
         }
     }
 
+    static xmlBodyPreprocess() {
+        return async function (ctx, next) {
+            if (ctx.request.type.toLowerCase() === 'application/xml') {
+                ctx.request.body = ctx.request.body.xml;
+            }
+            await next();
+        }
+    }
+
     start(port) {
         super.listen(port.koa);
         if (this.io) {
@@ -190,9 +200,9 @@ class Unicorn extends Koa {
 
 }
 
-Unicorn.Router = Router;
+Unikorn.Router = Router;
 
-Unicorn.m = {
+Unikorn.m = {
     errorInterceptor: async function (ctx, next) {
         if (ctx.result.code !== 10000) {
             ctx.fail(ctx.result.code);
@@ -216,4 +226,4 @@ Unicorn.m = {
     }
 };
 
-module.exports = Unicorn;
+module.exports = Unikorn;
