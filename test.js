@@ -22,7 +22,7 @@ router.get('/meow', ctx => {
 router.post('/', async (ctx, next) => {
     const data = ctx.request.body;
     ctx.u.log(ctx.header['content-type'] === ctx.request.type);
-    ctx.sendNotNull(data);
+    ctx.send(20007, data);
 });
 
 app.en('/test', router);

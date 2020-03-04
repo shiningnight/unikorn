@@ -151,12 +151,11 @@ class Unikorn extends Koa {
             };
             ctx.send = (code, data = undefined) => {
                 let status = '';
-                if (code === 10000) {
+                if (Math.floor(code / 10000) === 1) {
                     status = "Success";
                 }
                 else {
                     status = "Error";
-                    data = undefined;
                 }
                 ctx.sendRaw({
                     code: code,
