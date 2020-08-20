@@ -1,6 +1,6 @@
 {
   "name": "unikorn",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "uniformed koa template with socket.io",
   "main": "index.js",
   "author": {

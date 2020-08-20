@@ -28,6 +28,7 @@ let Message = {
 class Unikorn extends Koa {
     constructor(options) {
         const DEFAULTS = {
+            parseXml: true,
             exposed: false,
             allowEmptyResArr: false,
             io: {
@@ -73,20 +74,32 @@ class Unikorn extends Koa {
             this.use(Unikorn.cors());
         }
         this.use(Unikorn.registerUniSender());
-        this.use(xmlParser({
-            limit: '20mb',
-            encoding: 'utf8',
-            xmlOptions: {
-                explicitArray: false
-            }
-        }));
-        this.use(Unikorn.xmlBodyPreprocess());
-        this.use(bodyParser({
-            enableTypes: ['json', 'form'],
-            jsonLimit: '20mb',
-            formLimit: '20mb',
-            strict: true
-        }));
+        if (options.parseXml) {
+            this.use(xmlParser({
+                limit: '20mb',
+                encoding: 'utf8',
+                xmlOptions: {
+                    explicitArray: false
+                }
+            }));
+            this.use(Unikorn.xmlBodyPreprocess());
+            this.use(bodyParser({
+                enableTypes: ['json', 'form', 'text'],
+                jsonLimit: '20mb',
+                formLimit: '20mb',
+                strict: true
+            }));
+        } else {
+            this.use(bodyParser({
+                enableTypes: ['json', 'form', 'text'],
+                extendTypes: {
+                    text: ['text/xml', 'application/xml']
+                },
+                jsonLimit: '20mb',
+                formLimit: '20mb',
+                strict: true
+            }));
+        }
     }
 
     en(path, router) {
