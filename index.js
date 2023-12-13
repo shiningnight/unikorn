@@ -46,7 +46,11 @@ class Unikorn extends Koa {
         this.context.u = u;
         this.context.fetch = Unikorn.fetch;
         this.context.allowEmptyResArr = options.allowEmptyResArr;
-
+        if (options.Message) {
+            Message = Object.assign({}, Message, options.Message);
+        }
+        this.context.Message = Message;
+        this.Message = Message;
         if (options.io.enabled) {
             let io = Socketio({ path: options.io.path });
             if (options.io.auth && options.io.auth.mode !== 'none') {
@@ -162,7 +166,7 @@ class Unikorn extends Koa {
                 ctx.type = contentType;
                 ctx.body = body;
             };
-            ctx.send = (code, data = undefined) => {
+            ctx.send = (code, data = undefined, msg) => {
                 let status = '';
                 if (Math.floor(code / 10000) === 1) {
                     status = "Success";
@@ -173,12 +177,12 @@ class Unikorn extends Koa {
                 ctx.sendRaw({
                     code: code,
                     status: status,
-                    message: Message[code],
+                    message: msg? msg: Message[code],
                     data: data
                 });
             };
-            ctx.fail = code => {
-                ctx.send(code, undefined);
+            ctx.fail = (code, msg) => {
+                ctx.send(code, undefined, msg);
             };
             ctx.ok = data => {
                 ctx.send(10000, data);
