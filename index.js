@@ -150,7 +150,7 @@ class Unikorn extends Koa {
             const DEFAULTS = {
                 origin: '*',
                 allowMethods: 'GET,POST,DELETE,PUT,HEAD,OPTIONS,PATCH',
-                allowHeaders: 'x-requested-with,content-type'
+                allowHeaders: 'x-requested-with,content-type,authorization'
             };
             options = Object.assign({}, DEFAULTS, options);
             ctx.set('Access-Control-Allow-Origin', options.origin);
